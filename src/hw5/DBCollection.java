@@ -48,7 +48,7 @@ public class DBCollection {
 	 * Inserts documents into the collection
 	 * Must create and set a proper id before insertion
 	 * When this method is completed, the documents
-	 * should be permenantly stored on disk.
+	 * should be permanently stored on disk.
 	 * @param documents
 	 */
 	public void insert(JsonObject... documents) {

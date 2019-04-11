@@ -2,13 +2,26 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+
 import org.junit.jupiter.api.Test;
+
+import hw5.DB;
 
 class DBTester {
 
+	/*
+	 * Things to consider testing:
+	 * 
+	 * Properly returns collections
+	 * Properly creates new collection
+	 * Properly creates new DB (done)
+	 * Properly drops db
+	 */
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void testCreateNewDB() {
+		DB hw5 = new DB("hw5");
+		assertTrue(new File("testfiles/hw5").exists());
 	}
 
 }
