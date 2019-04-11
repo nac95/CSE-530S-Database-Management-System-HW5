@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.google.gson.JsonObject;
 
-public class DBCursor implements Iterator<Document>{
+public class DBCursor implements Iterator<JsonObject>{
 
 	public DBCursor(DBCollection collection, JsonObject query, JsonObject fields) {
 		
@@ -20,7 +20,7 @@ public class DBCursor implements Iterator<Document>{
 	/**
 	 * Returns the next document
 	 */
-	public Document next() {
+	public JsonObject next() {
 		return null;
 	}
 	
