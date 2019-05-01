@@ -10,12 +10,15 @@ public class DBCursor implements Iterator<JsonObject>{
 	private JsonObject query;
 	private JsonObject fields;
 	private LinkedList<JsonObject> targetDocuments;
+	private int hasNextPointer;
+	private int nextPointer;
 
 	public DBCursor(DBCollection collection, JsonObject query, JsonObject fields) {
 		this.collection = collection;
 		this.query = query;
 		this.fields = fields;
 		this.targetDocuments = new LinkedList<>();
+		this.hasNextPointer = -1;
 		//process query in this part
 		// make need a function
 		
@@ -25,7 +28,8 @@ public class DBCursor implements Iterator<JsonObject>{
 	 * Returns true if there are more documents to be seen
 	 */
 	public boolean hasNext() {
-		if(this.targetDocuments.getFirst() != null) {
+		hasNextPointer++;
+		if(this.targetDocuments.get(hasNextPointer) != null) {
 			return true;
 		}
 		return false;
@@ -35,7 +39,8 @@ public class DBCursor implements Iterator<JsonObject>{
 	 * Returns the next document
 	 */
 	public JsonObject next() {
-		return this.targetDocuments.removeFirst();
+		nextPointer++;
+		return this.targetDocuments.get(nextPointer);
 	}
 	
 	/**

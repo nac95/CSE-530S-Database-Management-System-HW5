@@ -27,14 +27,14 @@ class CollectionTester {
 	/*
 	 * Things to be tested:
 	 * 
-	 * Document access (done?)
+	 * Document access
 	 * Document insert/update/remove
 	 */
 	
 	@Before
 	public void setup() {
 		db = new DB("data");
-		test = db.getCollection("test");
+		test = db.getCollection("testCollection");
 	}
 
 	
@@ -59,7 +59,6 @@ class CollectionTester {
 	
 	@Test
 	public void testInsert() {
-		//Document d;
 		JsonObject jo = new JsonObject();
 		jo.addProperty("testInsert", "Worked");
 		test.insert(jo);
