@@ -11,7 +11,7 @@ import hw5.DBCollection;
 import hw5.DBCursor;
 
 class CursorTester {
-
+	// construction getter setter no test
 	/*
 	 *Queries:
 	 * 	Find all (done?)
@@ -35,5 +35,60 @@ class CursorTester {
 		JsonObject d3 = results.next();//verify contents?
 		assertTrue(!results.hasNext());
 	}
+	
+	@Test
+	public void testFindQuery() {
+		
+	}
+	
+	@Test
+	public void testFindProjection() {
+		
+	}
+	
+	
+	@Test
+	public void testInsert() {
+		
+	}
+	
+	@Test
+	public void testUpdate() {
+		
+	}
+	
+	@Test
+	public void testRemove() {
+		
+	}
+	
+	@Test
+	public void testCount() {
+		
+	}
+	
+	@Test
+	public void testGetName() {
+		
+	}
+
+	
+	@Test
+	public void testQueryEmbedded() {
+		DB db = new DB("data");
+		DBCollection test = db.getCollection("test");
+		
+		JsonObject embedded =  new JsonObject();
+		embedded.addProperty("key2", "value2");
+		JsonObject outer =  new JsonObject();
+		outer.add("embedded",embedded);
+		
+		DBCursor result = test.find(outer);
+		JsonObject doc = result.next();
+		assertTrue(result.count()==1);
+		assertTrue(doc.getAsJsonObject()!= null);
+	}
+	
+	
 
 }

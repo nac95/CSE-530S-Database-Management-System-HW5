@@ -1,18 +1,24 @@
 package hw5;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
 
 public class DBCollection {
 
+	private DB database;
+	private String name;
+	public LinkedList<JsonObject> documentStorage;
 	/**
 	 * Constructs a collection for the given database
 	 * with the given name. If that collection doesn't exist
 	 * it will be created.
 	 */
 	public DBCollection(DB database, String name) {
-		
+		this.database = database;
+		this.name = name;
+		this.documentStorage = new LinkedList<>();
 	}
 	
 	/**
@@ -20,7 +26,15 @@ public class DBCollection {
 	 * this collection.
 	 */
 	public DBCursor find() {
-		return null;
+		//create query
+		JsonObject query;
+		//create field
+		JsonObject projection;
+		for(int i=0; i < this.documentStorage.size();i++) {
+			
+		}
+		
+		return new DBCursor(this,query,projection);
 	}
 	
 	/**
@@ -30,6 +44,7 @@ public class DBCollection {
 	 * @return
 	 */
 	public DBCursor find(JsonObject query) {
+		//create projection
 		return null;
 	}
 	
@@ -41,7 +56,7 @@ public class DBCollection {
 	 * @return
 	 */
 	public DBCursor find(JsonObject query, JsonObject projection) {
-		return null;
+		return new DBCursor(this,query,projection);
 	}
 	
 	/**
@@ -82,11 +97,11 @@ public class DBCollection {
 	 * Returns the number of documents in this collection
 	 */
 	public long count() {
-		return 0;
+		return this.documentStorage.size();
 	}
 	
 	public String getName() {
-		return null;
+		return this.name;
 	}
 	
 	/**
@@ -95,14 +110,17 @@ public class DBCollection {
 	 * Use the parse function from the document class to create the document object
 	 */
 	public JsonObject getDocument(int i) {
-		return null;
+		 JsonObject j = this.documentStorage.get(i);
+		return j;
 	}
 	
 	/**
 	 * Drops this collection, removing all of the documents it contains from the DB
 	 */
 	public void drop() {
-		
+		int length = this.documentStorage.size();
+		for(int i = 0; i < length; ++i) {
+			this.documentStorage.remove();
+		}
 	}
-	
 }

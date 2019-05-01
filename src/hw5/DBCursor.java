@@ -1,12 +1,23 @@
 package hw5;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.google.gson.JsonObject;
 
 public class DBCursor implements Iterator<JsonObject>{
+	private DBCollection collection;
+	private JsonObject query;
+	private JsonObject fields;
+	private LinkedList<JsonObject> targetDocuments;
 
 	public DBCursor(DBCollection collection, JsonObject query, JsonObject fields) {
+		this.collection = collection;
+		this.query = query;
+		this.fields = fields;
+		this.targetDocuments = new LinkedList<>();
+		//process query in this part
+		// make need a function
 		
 	}
 	
@@ -14,6 +25,9 @@ public class DBCursor implements Iterator<JsonObject>{
 	 * Returns true if there are more documents to be seen
 	 */
 	public boolean hasNext() {
+		if(this.targetDocuments.getFirst() != null) {
+			return true;
+		}
 		return false;
 	}
 
@@ -21,14 +35,14 @@ public class DBCursor implements Iterator<JsonObject>{
 	 * Returns the next document
 	 */
 	public JsonObject next() {
-		return null;
+		return this.targetDocuments.removeFirst();
 	}
 	
 	/**
 	 * Returns the total number of documents
 	 */
 	public long count() {
-		return 0;
+		return this.targetDocuments.size();
 	}
 
 }
