@@ -1,12 +1,14 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.File;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import hw5.DB;
+
 
 class DBTester {
 
@@ -18,8 +20,9 @@ class DBTester {
 	 * Properly creates new DB (done)
 	 * Properly drops db
 	 */
+	
 	@Test
-	void testCreateNewDB() {
+	public void testCreateNewDB() {
 		DB hw5 = new DB("hw5");
 		assertTrue(new File("testfiles/hw5").exists());
 	}

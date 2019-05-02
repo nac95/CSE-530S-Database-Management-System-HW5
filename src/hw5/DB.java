@@ -4,6 +4,7 @@ import java.io.File;
 
 public class DB {
 	public String name;
+	private File db;
 	/**
 	 * Creates a database object with the given name.
 	 * The name of the database will be used to locate
@@ -17,6 +18,21 @@ public class DB {
 	 */
 	public DB(String name) {
 		this.name = name;
+		this.db = new File("testfiles/"+this.name+"");
+		if(!db.exists()) {
+			System.out.println("Creating database library.");
+			boolean result = false;
+			try {
+				db.mkdir();
+				result = true;
+			}catch(SecurityException se) {
+				//
+			}
+			if(result) {
+				System.out.println("Database library created.");
+			}
+		}
+		
 	}
 	
 	/**
@@ -35,13 +51,12 @@ public class DB {
 	 * Drops this database and all collections that it contains
 	 */
 	public void dropDatabase() {
-		File db = new File("testfiles/"+this.name+"");
-		if(db.exists()) {
+		if(this.db.exists()) {
 			//delete all the collections first
-			String[]entries = db.list();
+			String[]entries = this.db.list();
 			if(entries.length!=0) {
 				for(String s: entries){
-				    File currentFile = new File(db.getPath(),s);
+				    File currentFile = new File(this.db.getPath(),s);
 				    currentFile.delete();
 				}
 			}

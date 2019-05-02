@@ -1,6 +1,6 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
