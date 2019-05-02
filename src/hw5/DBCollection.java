@@ -36,13 +36,14 @@ public class DBCollection {
 	 * this collection.
 	 */
 	public DBCursor find() {
-		//create query
+		/*//create query
 		JsonObject query = new JsonObject();
 		query.addProperty("AllDocuments", true);
 		//create field
 		JsonObject projection = new JsonObject();
-		projection.addProperty("AllProjections", true);
-		return new DBCursor(this,query,projection);
+		projection.addProperty("AllProjections", true);*/
+		//return new DBCursor(this,query,projection);
+		return new DBCursor(this, null, null);
 	}
 	
 	/**
@@ -53,9 +54,10 @@ public class DBCollection {
 	 */
 	public DBCursor find(JsonObject query) {
 		//create projection
-		JsonObject projection = new JsonObject();
+		/*JsonObject projection = new JsonObject();
 		projection.addProperty("AllProjections", true);
-		return new DBCursor(this,query,projection);
+		return new DBCursor(this,query,projection);*/
+		return new DBCursor(this, query, null);
 	}
 	
 	/**

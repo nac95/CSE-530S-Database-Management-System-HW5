@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 
 public class Document {
 	
@@ -15,7 +16,13 @@ public class Document {
 	 * a file into an object that can be manipulated.
 	 */
 	public static JsonObject parse(String json) {
-		return null;
+		if (json == null) {
+			return null;
+		}
+		JsonParser parser = new JsonParser();
+		JsonElement element = parser.parse(json);
+		JsonObject result = element.getAsJsonObject();
+		return result;
 	}
 	
 	/**
@@ -25,6 +32,13 @@ public class Document {
 	 * when writing data to disk.
 	 */
 	public static String toJsonString(JsonObject json) {
-		return null;
+		Set<String> keys = json.keySet();
+		StringBuilder re = new StringBuilder();
+		for (String key : keys) {
+			JsonElement element = json.get(key);
+			re.append(element.getAsString());
+		}
+		String result = re.toString();
+		return result;
 	}
 }
