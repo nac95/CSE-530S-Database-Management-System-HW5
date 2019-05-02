@@ -18,6 +18,7 @@ public class DBCollection {
 	public DBCollection(DB database, String name) {
 		this.database = database;
 		this.name = name;
+		//may change
 		this.documentStorage = new LinkedList<>();
 	}
 	

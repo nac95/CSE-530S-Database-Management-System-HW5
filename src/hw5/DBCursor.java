@@ -22,6 +22,24 @@ public class DBCursor implements Iterator<JsonObject>{
 		//process query in this part
 		// make need a function
 		
+		// if the query getAllDocument is true, then run if
+		if(query.getAsBoolean()) {
+			
+			
+			//if the fields is all projection
+			if(fields.getAsBoolean()) {
+				
+			}else {
+				
+			}
+			
+			
+		}
+		// if the query getAllDocument is false, or cannot find boolean
+		else {
+			
+		}
+		
 	}
 	
 	/**

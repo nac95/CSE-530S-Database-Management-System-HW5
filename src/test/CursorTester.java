@@ -46,7 +46,7 @@ class CursorTester {
 		assertTrue(d2.getAsJsonObject()!= null);
 		JsonObject compare = new JsonObject();
 		compare.addProperty("key2", "value2");
-		assertTrue(d2.getAsJsonObject("embedded").getAsJsonObject().equals(compare));
+		assertTrue(d2.getAsJsonObject("embedded").equals(compare));
 		//array
 		assertTrue(results.hasNext());
 		JsonObject d3 = results.next();
@@ -55,7 +55,7 @@ class CursorTester {
 		array2.add("one");
 		array2.add("two");
 		array2.add("three");
-		assertTrue(d3.getAsJsonObject("array").getAsJsonArray().equals(array2));
+		assertTrue(d3.getAsJsonArray("array").equals(array2));
 		//end of all
 		assertTrue(!results.hasNext());
 	}

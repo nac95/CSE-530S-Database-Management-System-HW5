@@ -1,7 +1,9 @@
 package hw5;
 
-public class DB {
+import java.io.File;
 
+public class DB {
+	public String name;
 	/**
 	 * Creates a database object with the given name.
 	 * The name of the database will be used to locate
@@ -14,7 +16,7 @@ public class DB {
 	 * created.
 	 */
 	public DB(String name) {
-		
+		this.name = name;
 	}
 	
 	/**
@@ -26,14 +28,25 @@ public class DB {
 	 * disk at this time. Those methods are in DBCollection.
 	 */
 	public DBCollection getCollection(String name) {
-		return null;
+		return new DBCollection(this,name);
 	}
 	
 	/**
 	 * Drops this database and all collections that it contains
 	 */
 	public void dropDatabase() {
-		
+		File db = new File("testfiles/"+this.name+"");
+		if(db.exists()) {
+			//delete all the collections first
+			String[]entries = db.list();
+			if(entries.length!=0) {
+				for(String s: entries){
+				    File currentFile = new File(db.getPath(),s);
+				    currentFile.delete();
+				}
+			}
+			db.delete();
+		}
 	}
 	
 	
