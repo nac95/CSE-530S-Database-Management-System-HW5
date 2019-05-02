@@ -4,7 +4,7 @@ import java.io.File;
 
 public class DB {
 	public String name;
-	private File db;
+	public File db;
 	/**
 	 * Creates a database object with the given name.
 	 * The name of the database will be used to locate
@@ -63,6 +63,7 @@ public class DB {
 			db.delete();
 		}
 	}
+	
 	
 	
 }

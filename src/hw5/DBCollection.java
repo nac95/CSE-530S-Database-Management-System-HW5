@@ -1,5 +1,6 @@
 package hw5;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class DBCollection {
 	private DB database;
 	private String name;
 	public LinkedList<JsonObject> documentStorage;
+	private File collection;
 	/**
 	 * Constructs a collection for the given database
 	 * with the given name. If that collection doesn't exist
@@ -20,6 +22,13 @@ public class DBCollection {
 		this.name = name;
 		//may change
 		this.documentStorage = new LinkedList<>();
+		this.collection = new File(this.database.db.getPath(),name); 
+		if(this.collection.exists()) {
+			
+		}else {
+			
+		}
+		
 	}
 	
 	/**
