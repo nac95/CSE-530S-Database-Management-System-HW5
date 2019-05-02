@@ -70,13 +70,14 @@ class CollectionTester {
 	
 	@Test
 	public void testInsertMulti() {
-		JsonArray jos = new JsonArray();
+//		JsonArray jos = new JsonArray();
+		JsonObject [] jos = new JsonObject[20];
 		for(int i=0; i < 20; ++i) {
 			JsonObject document = new JsonObject();
 			document.addProperty("testInsertMulti", "test");
-			jos.add(document);
+			jos[i] = document;
 		}
-		test.insert(jos.getAsJsonObject());
+		test.insert(jos);
 		JsonObject document = new JsonObject();
 		document.addProperty("testInsertMulti", "test");
 		DBCursor result = test.find(document);

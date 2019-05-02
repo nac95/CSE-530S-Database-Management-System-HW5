@@ -27,13 +27,11 @@ public class DBCollection {
 	 */
 	public DBCursor find() {
 		//create query
-		JsonObject query;
+		JsonObject query = new JsonObject();
+		query.addProperty("AllDocuments", true);
 		//create field
-		JsonObject projection;
-		for(int i=0; i < this.documentStorage.size();i++) {
-			
-		}
-		
+		JsonObject projection = new JsonObject();
+		projection.addProperty("AllProjections", true);
 		return new DBCursor(this,query,projection);
 	}
 	
@@ -45,7 +43,9 @@ public class DBCollection {
 	 */
 	public DBCursor find(JsonObject query) {
 		//create projection
-		return null;
+		JsonObject projection = new JsonObject();
+		projection.addProperty("AllProjections", true);
+		return new DBCursor(this,query,projection);
 	}
 	
 	/**
@@ -67,7 +67,10 @@ public class DBCollection {
 	 * @param documents
 	 */
 	public void insert(JsonObject... documents) {
-		
+		for(int i = 0; i < documents.length;++i) {
+			this.documentStorage.add(documents[i]);
+		}
+		// add this to file
 	}
 	
 	/**
@@ -79,7 +82,11 @@ public class DBCollection {
 	 * 				false if only the first matching document should be updated
 	 */
 	public void update(JsonObject query, JsonObject update, boolean multi) {
-		
+		if(multi) {
+			
+		}else {
+			
+		}
 	}
 	
 	/**
@@ -90,7 +97,11 @@ public class DBCollection {
 	 * 				false if only the first matching document should be updated
 	 */
 	public void remove(JsonObject query, boolean multi) {
-		
+		if(multi) {
+			
+		}else {
+			
+		}
 	}
 	
 	/**
