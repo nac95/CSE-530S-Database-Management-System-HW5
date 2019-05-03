@@ -386,16 +386,17 @@ public class DBCollection {
 	}
 	
 	private void writeFile() {
+		System.out.println("write file start");
 		  String fileResult="";
 		  try(FileWriter fw = new FileWriter(this.collection)){
 		   for(int i = 0; i < this.documentStorage.size();++i) {
-		    System.out.println();
-		    System.out.println("insert"+Document.toJsonString(this.documentStorage.get(i))+"in collection 375");
-		    fileResult += Document.toJsonString(this.documentStorage.get(i))+"/t";
+		    System.out.println(this.documentStorage.get(i).toString());
+//		    System.out.println("insert"+Document.toJsonString(this.documentStorage.get(i))+"in collection 375");
+		    fileResult += this.documentStorage.get(i).toString()+"\t\n";
 		   }
-		   System.out.println("file result");
+		   System.out.println("file result"+fileResult);
 		   fw.write(fileResult);
-		            fw.flush();
+		   fw.flush();
 		  }catch(IOException e) {
 		   e.printStackTrace();
 		  }
