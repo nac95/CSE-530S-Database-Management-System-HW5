@@ -77,7 +77,7 @@ public class CursorTester {
 	}
 	
 	@Test
-	public void testFindQueryProjection() {		
+	public void testFindQueryProjection() throws IOException {		
 		JsonObject document = new JsonObject();
 		document.addProperty("title", "myTest");
 		document.addProperty("course", "cse530");
