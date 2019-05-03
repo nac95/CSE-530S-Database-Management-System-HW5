@@ -1,6 +1,11 @@
 package test;
 
 import static org.junit.Assert.*;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +16,7 @@ import hw5.DB;
 import hw5.DBCollection;
 import hw5.DBCursor;
 
-class CursorTester {
+public class CursorTester {
 	private DB db;
 	private DBCollection test;
 	
@@ -25,7 +30,7 @@ class CursorTester {
 	 * 	Embedded Documents and arrays
 	 */
 	@Before
-	public void setup() {
+	public void setup() throws FileNotFoundException, IOException, ParseException {
 		db = new DB("data");
 		test = db.getCollection("test");
 	}
@@ -106,7 +111,7 @@ class CursorTester {
 	}
 	
 	@Test
-	public void testQueryEmbedded() {
+	public void testQueryEmbedded() throws FileNotFoundException, IOException, ParseException {
 		DB db2 = new DB("data");
 		DBCollection test2 = db2.getCollection("test");
 		

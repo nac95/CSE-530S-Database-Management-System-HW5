@@ -40,8 +40,9 @@ public class DBCursor implements Iterator<JsonObject>{
 		Iterator<String> iter2 = fieldsKeys.iterator();
 		String fieldKey = iter.next();
 		JsonElement fieldValue = fields.get(fieldKey);
+		boolean contain = fieldValue.getAsBoolean();
 		if (query != null && fields != null) {
-			find(collection, queryKey, queryValue, fieldKey, fieldValue);
+			find(collection, queryKey, queryValue, fieldKey, contain);
 		}
 	}
 	
@@ -162,8 +163,113 @@ public class DBCursor implements Iterator<JsonObject>{
 		}
 	}
 	
-	private void find(DBCollection collection, String queryKey, JsonElement queryValue, String fieldKey, JsonElement fieldValue) {
-		
+	private void find(DBCollection collection, String queryKey, JsonElement queryValue, String fieldKey, boolean contain) {
+		long count = collection.count();
+		if (count <= 0) {
+			System.out.println(" ");
+		} else {
+			if (queryValue.isJsonPrimitive()) {
+				for (long i = 0; i < count; i++) {
+					JsonObject doc = collection.getDocument((int)i);
+					Set<String> docKeys = doc.keySet();
+					if (!docKeys.contains(queryKey)) {
+						break;
+					}
+					if (doc.getAsJsonPrimitive(queryKey).getAsString().equals(queryValue.getAsString())) {
+						if (contain) {
+							String result = doc.get(fieldKey).getAsString();
+							targetDocuments.add(doc);
+							System.out.println(fieldKey + result);
+						} else {
+							
+						}
+					}				
+				}
+			} else if (queryValue.isJsonObject()) {
+				Set<String> queryValueKeys = ((JsonObject)queryValue).keySet();
+				Iterator<String> iter = queryValueKeys.iterator();
+				String queryValueKey = iter.next();
+				JsonElement queryValueValue = ((JsonObject)queryValue).get(queryValueKey);
+				for (long i = 0; i < count; i++) {
+					JsonObject doc = collection.getDocument((int)i);
+					Set<String> docKeys = doc.keySet();
+					if (!docKeys.contains(queryKey)) {
+						break;
+					} else if (doc.get(queryKey).getAsString().equals(queryValue.getAsString())) {
+						targetDocuments.add(doc);
+						System.out.println(doc);
+					} else if (queryValueValue.isJsonPrimitive()){
+						int value = queryValueValue.getAsInt();
+						switch(queryValueKey) {
+						case "eq":
+							if (doc.getAsJsonObject(queryKey).getAsInt() == value) {
+								targetDocuments.add(doc);
+								System.out.println(doc);
+							}
+							break;
+							
+						case "gt":
+							if (doc.getAsJsonObject(queryKey).getAsInt() > value) {
+								targetDocuments.add(doc);
+								System.out.println(doc);
+							}
+							break;
+							
+						case "gte":
+							if (doc.getAsJsonObject(queryKey).getAsInt() >= value) {
+								targetDocuments.add(doc);
+								System.out.println(doc);
+							}
+							break;
+							
+						case "lt":
+							if (doc.getAsJsonObject(queryKey).getAsInt() < value) {
+								targetDocuments.add(doc);
+								System.out.println(doc);
+							}
+							break;
+							
+						case "lte":
+							if (doc.getAsJsonObject(queryKey).getAsInt() <= value) {
+								targetDocuments.add(doc);
+								System.out.println(doc);
+							}
+							break;
+							
+						case "ne":
+							if (doc.getAsJsonObject(queryKey).getAsInt() != value) {
+								targetDocuments.add(doc);
+								System.out.println(doc);
+							}
+							break;
+						}
+							
+					} else if (queryValueValue.isJsonArray()) {
+						Set<Integer> set = new HashSet<>();
+						Iterator<JsonElement> iter2 = queryValueValue.getAsJsonArray().iterator();
+						set.add(iter2.next().getAsInt());
+						while (iter2.hasNext()) {
+							set.add(iter2.next().getAsInt());
+						}
+						switch(queryValueKey) {
+						case "in":
+							if (set.contains(doc.getAsJsonObject(queryKey).getAsInt())) {
+								targetDocuments.add(doc);
+								System.out.println(doc);
+							}
+							break;
+
+						case "nin":
+							if (!set.contains(doc.getAsJsonObject(queryKey).getAsInt())) {
+								targetDocuments.add(doc);
+								System.out.println(doc);
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**

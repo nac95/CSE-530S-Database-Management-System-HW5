@@ -1,6 +1,9 @@
 package hw5;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
 
 public class DB {
 	public String name;
@@ -42,8 +45,11 @@ public class DB {
 	 * 
 	 * Note that it is not necessary to read any data from
 	 * disk at this time. Those methods are in DBCollection.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public DBCollection getCollection(String name) {
+	public DBCollection getCollection(String name) throws FileNotFoundException, IOException, ParseException {
 		return new DBCollection(this,name);
 	}
 	

@@ -1,10 +1,16 @@
 package hw5;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 
 public class DBCollection {
 
@@ -16,14 +22,33 @@ public class DBCollection {
 	 * Constructs a collection for the given database
 	 * with the given name. If that collection doesn't exist
 	 * it will be created.
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws ParseException
 	 */
-	public DBCollection(DB database, String name) {
+	public DBCollection(DB database, String name) throws FileNotFoundException, IOException, ParseException {
 		this.database = database;
 		this.name = name;
 		//may change
 		this.documentStorage = new LinkedList<>();
-		this.collection = new File(this.database.db.getPath(),name); 
+		
+		this.collection = new File(this.database.db.getPath()+"/"+name+".json"); 
+		JsonParser jsonParser = new JsonParser();
+		System.out.println("exist?"+this.collection.exists());
 		if(this.collection.exists()) {
+			try(FileReader fr = new FileReader(this.database.db.getPath()+"/"+name+".json")){
+				JsonObject jos = (JsonObject) jsonParser.parse(fr);
+				System.out.println(jos);
+				
+			}
+			catch(FileNotFoundException e) {
+				System.out.println("File not found");
+				e.printStackTrace();
+			}
+			catch(IOException e) {
+				e.printStackTrace();
+			}
+			
 			
 		}else {
 			
@@ -36,13 +61,6 @@ public class DBCollection {
 	 * this collection.
 	 */
 	public DBCursor find() {
-		/*//create query
-		JsonObject query = new JsonObject();
-		query.addProperty("AllDocuments", true);
-		//create field
-		JsonObject projection = new JsonObject();
-		projection.addProperty("AllProjections", true);*/
-		//return new DBCursor(this,query,projection);
 		return new DBCursor(this, null, null);
 	}
 	
@@ -53,10 +71,6 @@ public class DBCollection {
 	 * @return
 	 */
 	public DBCursor find(JsonObject query) {
-		//create projection
-		/*JsonObject projection = new JsonObject();
-		projection.addProperty("AllProjections", true);
-		return new DBCursor(this,query,projection);*/
 		return new DBCursor(this, query, null);
 	}
 	

@@ -3,9 +3,11 @@ package test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
 import java.util.LinkedList;
 
 import org.junit.Before;
@@ -19,7 +21,7 @@ import hw5.DB;
 import hw5.DBCollection;
 import hw5.DBCursor;
 
-class CollectionTester {
+public class CollectionTester {
 	
 	private DB db;
 	private DBCollection test;
@@ -32,7 +34,7 @@ class CollectionTester {
 	 */
 	
 	@Before
-	public void setup() {
+	public void setup() throws FileNotFoundException, IOException, ParseException {
 		db = new DB("data");
 		test = db.getCollection("testCollection");
 	}
