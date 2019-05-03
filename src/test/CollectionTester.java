@@ -60,7 +60,7 @@ public class CollectionTester {
 		assertTrue(array.getAsJsonArray("array").equals(array2));
 	}
 	
-	@Test
+	/*@Test
 	public void testInsert() throws IOException, ParseException {
 //		db = new DB("data");
 //		testCollection = db.getCollection("testCollection");
@@ -73,9 +73,10 @@ public class CollectionTester {
 		assertTrue(result.count()==1);
 		JsonObject doc = result.next();
 		assertTrue(doc.getAsJsonObject()!= null);
-	}
+		testCollection.remove(jo, true);
+	}*/
 	
-	@Test
+	/*@Test
 	 public void testInsertMulti() throws IOException, ParseException {
 	  db = new DB("data");
 	  testCollection = db.getCollection("testCollection");
@@ -114,7 +115,7 @@ public class CollectionTester {
 	  }
 	  assertTrue(!result.hasNext());
 	  
-	 }
+	 }*/
 
 	
 	@Test
@@ -138,7 +139,7 @@ public class CollectionTester {
 		System.out.println("got collection");
 		JsonObject object = new JsonObject();
 		object.addProperty("RemoveTest", "test");
-		for(int i = 0; i < 20; i++) {
+		for(int i = 0; i < 5; i++) {
 			testCollection.insert(object);
 		}
 		JsonObject jo = new JsonObject();
@@ -147,8 +148,8 @@ public class CollectionTester {
 		//test multi is False
 		testCollection.remove(jo, false);
 		DBCursor result1 = testCollection.find(jo);
-		assertTrue(result1.count()==19);
-		for(int i=0; i < 20-1;i++) {
+		assertTrue(result1.count()==4);
+		for(int i=0; i < 4;i++) {
 			assertTrue(result1.hasNext());
 		}
 		assertFalse(result1.hasNext());

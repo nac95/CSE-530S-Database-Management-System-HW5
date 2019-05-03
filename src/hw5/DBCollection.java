@@ -222,16 +222,24 @@ public class DBCollection {
 		List<JsonObject> another = new LinkedList<>();
 		Map<JsonObject, Integer> result = find(this, queryKeys, query, multi);
 		Set<JsonObject> set = result.keySet();
+		boolean foundOne = false;
 		if(!multi) {
+			for (JsonObject object : documentStorage) {
+				if (!foundOne) {
+					if (!set.contains(object)) {
+						another.add(object);
+					} else {
+						foundOne = true;
+					}
+				} else {
+					another.add(object);
+				}
+			}
+		} else {
 			for (JsonObject object : documentStorage) {
 				if (!set.contains(object)) {
 					another.add(object);
 				}
-			}
-		}
-		for (JsonObject object : documentStorage) {
-			if (!set.contains(object)) {
-				another.add(object);
 			}
 		}
 		documentStorage = another;
