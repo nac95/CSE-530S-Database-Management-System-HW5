@@ -47,20 +47,23 @@ public class DBCollection {
 		if(this.collection.exists()) {
 			System.out.println("start to read file");
 			//try read the file
-			try(FileReader fr = new FileReader(this.collection)){				
-				BufferedReader br = new BufferedReader(fr);
-				JsonStreamParser parser = new JsonStreamParser(br);
-				
-				// synchronize on an object shared by threads
-				synchronized (parser) { 
-				System.out.println("parser has next?"+parser.hasNext());
-					while (parser.hasNext()) {
-					    JsonObject jo = (JsonObject)parser.next();
-					    this.documentStorage.add(jo);
-					    System.out.println(jo.toString());
-					   }
+			try(FileReader fr = new FileReader(this.collection)){
+				if(this.collection.length()!=0) {
+					BufferedReader br = new BufferedReader(fr);
+					JsonStreamParser parser = new JsonStreamParser(br);
+					
+					// synchronize on an object shared by threads
+					synchronized (parser) { 
+					System.out.println("parser has next?"+parser.hasNext());
+						while (parser.hasNext()) {
+						    JsonObject jo = (JsonObject)parser.next();
+						    this.documentStorage.add(jo);
+						    System.out.println(jo.toString());
+						   }
+					}
+					//end of parse
 				}
-				//end of parse
+				
 			}
 			catch(IOException e) {
 				System.out.println("IO exception");

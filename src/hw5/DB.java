@@ -50,7 +50,7 @@ public class DB {
 	 * @throws FileNotFoundException 
 	 */
 	public DBCollection getCollection(String name) throws FileNotFoundException, IOException, ParseException {
-		return new DBCollection(this,name);
+		return new DBCollection(new DB(this.name),name);
 	}
 	
 	/**

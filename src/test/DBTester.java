@@ -36,6 +36,7 @@ public class DBTester {
 		DB hw5 = new DB("hw5");
 		DBCollection collection = new DBCollection(hw5, "test");
 		assertTrue(new File("testfiles/hw5/test.json").exists());
+			
 	}
 	
 	@Test
@@ -43,6 +44,7 @@ public class DBTester {
 		DB hw5 = new DB("hw5");
 		DBCollection collection = new DBCollection(hw5, "test");
 		assertTrue(hw5.getCollection("test").getName().equals("test"));
+		
 	}
 	
 	@Test
