@@ -66,7 +66,7 @@ public class CollectionTester {
 	}
 	
 	@Test
-	public void testInsert() {
+	public void testInsert() throws IOException {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("testInsert", "Worked");
 		test.insert(jo);
@@ -77,7 +77,7 @@ public class CollectionTester {
 	}
 	
 	@Test
-	public void testInsertMulti() {
+	public void testInsertMulti() throws IOException {
 //		JsonArray jos = new JsonArray();
 		JsonObject [] jos = new JsonObject[20];
 		for(int i=0; i < 20; ++i) {

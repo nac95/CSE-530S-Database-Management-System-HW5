@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -102,12 +103,17 @@ public class DBCollection {
 	 * When this method is completed, the documents
 	 * should be permanently stored on disk.
 	 * @param documents
+	 * @throws IOException 
 	 */
-	public void insert(JsonObject... documents) {
+	public void insert(JsonObject... documents) throws IOException {
 		for(int i = 0; i < documents.length;++i) {
 			this.documentStorage.add(documents[i]);
 			// add this to file
-			//try()
+			try(FileWriter file = new FileWriter(this.collection)){
+				
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		
