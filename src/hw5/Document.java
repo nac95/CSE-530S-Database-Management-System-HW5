@@ -36,7 +36,16 @@ public class Document {
 		StringBuilder re = new StringBuilder();
 		for (String key : keys) {
 			JsonElement element = json.get(key);
-			re.append(element.getAsString());
+			re.append(key);
+			if (element.isJsonObject()) {
+				re.append(element.getAsJsonObject().getAsString());
+			} 
+			if (element.isJsonArray()) {
+				re.append(element.getAsJsonArray().getAsString());
+			}
+			if (element.isJsonPrimitive()) {
+				re.append(element.getAsJsonPrimitive().getAsString());
+			}
 		}
 		String result = re.toString();
 		return result;
