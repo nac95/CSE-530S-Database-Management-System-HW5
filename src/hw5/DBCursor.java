@@ -123,37 +123,37 @@ public class DBCursor implements Iterator<JsonObject>{
 			} else if (queryValueValue.isJsonPrimitive()){
 				int value = queryValueValue.getAsInt();
 				switch(queryValueKey) {
-				case "eq":
+				case "$eq":
 					if (doc.getAsJsonObject(queryKey).getAsInt() == value) {
 						notHaveField(doc);
 					}
 					break;
 					
-				case "gt":
+				case "$gt":
 					if (doc.getAsJsonObject(queryKey).getAsInt() > value) {
 						notHaveField(doc);
 					}
 					break;
 					
-				case "gte":
+				case "$gte":
 					if (doc.getAsJsonObject(queryKey).getAsInt() >= value) {
 						notHaveField(doc);
 					}
 					break;
 					
-				case "lt":
+				case "$lt":
 					if (doc.getAsJsonObject(queryKey).getAsInt() < value) {
 						notHaveField(doc);
 					}
 					break;
 					
-				case "lte":
+				case "$lte":
 					if (doc.getAsJsonObject(queryKey).getAsInt() <= value) {
 						notHaveField(doc);
 					}
 					break;
 					
-				case "ne":
+				case "$ne":
 					if (doc.getAsJsonObject(queryKey).getAsInt() != value) {
 						notHaveField(doc);
 					}
@@ -168,13 +168,13 @@ public class DBCursor implements Iterator<JsonObject>{
 					set.add(iter2.next().getAsInt());
 				}
 				switch(queryValueKey) {
-				case "in":
+				case "$in":
 					if (set.contains(doc.getAsJsonObject(queryKey).getAsInt())) {
 						notHaveField(doc);
 					}
 					break;
 
-				case "nin":
+				case "$nin":
 					if (!set.contains(doc.getAsJsonObject(queryKey).getAsInt())) {
 						notHaveField(doc);
 					}
@@ -291,37 +291,37 @@ public class DBCursor implements Iterator<JsonObject>{
 			} else if (queryValueValue.isJsonPrimitive()){
 				int value = queryValueValue.getAsInt();
 				switch(queryValueKey) {
-				case "eq":
+				case "$eq":
 					if (doc.getAsJsonObject(queryKey).getAsInt() == value) {
 						haveField(contain, doc, docKeys, fieldKey);
 					}
 					break;
 					
-				case "gt":
+				case "$gt":
 					if (doc.getAsJsonObject(queryKey).getAsInt() > value) {
 						haveField(contain, doc, docKeys, fieldKey);
 					}
 					break;
 					
-				case "gte":
+				case "$gte":
 					if (doc.getAsJsonObject(queryKey).getAsInt() >= value) {
 						haveField(contain, doc, docKeys, fieldKey);
 					}
 					break;
 					
-				case "lt":
+				case "$lt":
 					if (doc.getAsJsonObject(queryKey).getAsInt() < value) {
 						haveField(contain, doc, docKeys, fieldKey);
 					}
 					break;
 					
-				case "lte":
+				case "$lte":
 					if (doc.getAsJsonObject(queryKey).getAsInt() <= value) {
 						haveField(contain, doc, docKeys, fieldKey);
 					}
 					break;
 					
-				case "ne":
+				case "$ne":
 					if (doc.getAsJsonObject(queryKey).getAsInt() != value) {
 						haveField(contain, doc, docKeys, fieldKey);
 					}
@@ -336,13 +336,13 @@ public class DBCursor implements Iterator<JsonObject>{
 					set.add(iter2.next().getAsInt());
 				}
 				switch(queryValueKey) {
-				case "in":
+				case "$in":
 					if (set.contains(doc.getAsJsonObject(queryKey).getAsInt())) {
 						haveField(contain, doc, docKeys, fieldKey);
 					}
 					break;
 
-				case "nin":
+				case "$nin":
 					if (!set.contains(doc.getAsJsonObject(queryKey).getAsInt())) {
 						haveField(contain, doc, docKeys, fieldKey);
 					}
