@@ -82,7 +82,15 @@ public class DBCollection {
 	 * this collection.
 	 */
 	public DBCursor find() {
-		return new DBCursor(this, null, null);
+		DBCollection col = null;
+		try {
+			col = new DBCollection(this.database, this.name);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DBCursor result = new DBCursor(col, null, null);
+		return result;
 	}
 	
 	/**
@@ -111,7 +119,15 @@ public class DBCollection {
 	 * @return
 	 */
 	public DBCursor find(JsonObject query, JsonObject projection) {
-		return new DBCursor(this,query,projection);
+		DBCollection col = null;
+		try {
+			col = new DBCollection(this.database, this.name);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DBCursor result = new DBCursor(col, query, projection);
+		return result;
 	}
 	
 	/**

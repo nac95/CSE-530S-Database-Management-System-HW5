@@ -71,7 +71,7 @@ public class CursorTester {
 		DBCursor results = test.find(jo);
 		assertTrue(results.count() == 1);
 		assertTrue(results.hasNext());
-		assertTrue(!results.hasNext());
+		//assertTrue(!results.hasNext());
 		assertTrue(results.next().getAsJsonObject()!= null);
 		assertTrue(results.next().getAsJsonObject() == null);
 	}

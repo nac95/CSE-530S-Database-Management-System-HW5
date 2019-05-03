@@ -54,7 +54,7 @@ public class DBCursor implements Iterator<JsonObject>{
 		} else {
 			for (long i = 0; i < count; i++) {
 				JsonObject doc = collection.getDocument((int)i);
-				System.out.println(doc);
+				result.put(doc, 1);
 			}
 		}
 	}
