@@ -136,19 +136,19 @@ public class CollectionTester {
 		System.out.println("about to get collection");
 		testCollection = db.getCollection("testCollection");
 		System.out.println("got collection");
-		JsonObject [] jos = new JsonObject[20];
-		for(int i=0; i < jos.length; ++i) {
-			jos[i] = new JsonObject();
-			jos[i].addProperty("RemoveTest", "test");
+		JsonObject object = new JsonObject();
+		object.addProperty("RemoveTest", "test");
+		for(int i = 0; i < 20; i++) {
+			testCollection.insert(object);
 		}
 		JsonObject jo = new JsonObject();
 		jo.addProperty("RemoveTest", "test");
 		
 		//test multi is False
-		testCollection.remove(jo, true);
+		testCollection.remove(jo, false);
 		DBCursor result1 = testCollection.find(jo);
 		assertTrue(result1.count()==19);
-		for(int i=0; i < jos.length-1;++i) {
+		for(int i=0; i < 20-1;i++) {
 			assertTrue(result1.hasNext());
 		}
 		assertFalse(result1.hasNext());
