@@ -87,6 +87,9 @@ public class DBCursor implements Iterator<JsonObject>{
 					}
 				} 
 			}
+			if (result.size() == 0) {
+				System.out.println(" ");
+			}
 			for (JsonObject object : result.keySet()) {
 				if (result.get(object) == queryKeys.size()) {
 					print(result);
@@ -235,6 +238,9 @@ public class DBCursor implements Iterator<JsonObject>{
 						arrayValue(count, collection, queryKey, queryValue, fieldKey, contain);
 					}
 				} 
+			}
+			if (result.size() == 0) {
+				System.out.println(" ");
 			}
 			for (JsonObject object : result.keySet()) {
 				if (result.get(object) == queryKeys.size()) {

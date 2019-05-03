@@ -8,8 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -21,7 +27,7 @@ public class DBCollection {
 
 	private DB database;
 	private String name;
-	public LinkedList<JsonObject> documentStorage;
+	public List<JsonObject> documentStorage;
 	private File collection;
 	/**
 	 * Constructs a collection for the given database
@@ -127,13 +133,43 @@ public class DBCollection {
 	 * 				false if only the first matching document should be updated
 	 */
 	public void update(JsonObject query, JsonObject update, boolean multi) {
-		if(multi) {
-			
-		}else {
+		Set<String> queryKeys = query.keySet();
+		List<JsonObject> another = new LinkedList<>();
+		Map<JsonObject, Integer> result = find(this, queryKeys, query, multi);
+		Set<JsonObject> set = result.keySet();
+		for (JsonObject object : documentStorage) {
+			if (!set.contains(object)) {
+				another.add(object);
+			}
+		}
+		update(result, another, update);
+		documentStorage = another;
+	}
+	
+	private void update(Map<JsonObject, Integer> result, List<JsonObject> another, JsonObject update) {
+		Set<String> updateKeys = update.keySet();
+		Iterator<String> iter = updateKeys.iterator();
+		//only one key-value pair
+		String updateKey = iter.next();
+		JsonElement updateValue = update.get(updateKey);
+		for (JsonObject object : result.keySet()) {
+			if (updateValue.isJsonPrimitive() || updateValue.isJsonArray()) {
+				JsonObject newObject = new JsonObject();
+				Set<String> objectKey = object.keySet();
+				for (String s : objectKey) {
+					if (s.equals(updateKey)) {
+						newObject.add(updateKey, updateValue);
+					} else {
+						newObject.add(s, object.get(s));
+					}
+				}
+				another.add(newObject);
+			} else {
+				
+			}
 			
 		}
 	}
-	
 	/**
 	 * Removes one or more documents that match the given
 	 * query parameters
@@ -142,10 +178,165 @@ public class DBCollection {
 	 * 				false if only the first matching document should be updated
 	 */
 	public void remove(JsonObject query, boolean multi) {
-		if(multi) {
-			
-		}else {
-			
+		Set<String> queryKeys = query.keySet();
+		List<JsonObject> another = new LinkedList<>();
+		Map<JsonObject, Integer> result = find(this, queryKeys, query, multi);
+		Set<JsonObject> set = result.keySet();
+		for (JsonObject object : documentStorage) {
+			if (!set.contains(object)) {
+				another.add(object);
+			}
+		}
+		documentStorage = another;
+	}
+	
+	private Map<JsonObject, Integer> find(DBCollection collection, Set<String> queryKeys, JsonObject query, boolean multi) {
+		long count = collection.count();
+		Map<JsonObject, Integer> result = new HashMap<>();
+		if (count > 0) {
+			Iterator<String> iter = queryKeys.iterator();
+			//only one key-value pair
+			String queryKey = iter.next();
+			JsonElement queryValue = query.get(queryKey);
+			if (queryValue.isJsonPrimitive()) {
+				primitiveValue(count, collection, queryKey, queryValue, result);
+			} else if (queryValue.isJsonObject()) {
+				objectValue(count, collection, queryKey, queryValue, result);
+			} else if (queryValue.isJsonArray()) {
+				arrayValue(count, collection, queryKey, queryValue, result);
+			}
+			if (queryKeys.size() > 1){
+				//more than one key-value pair
+				while (iter.hasNext()) {
+					queryKey = iter.next();
+					queryValue = query.get(queryKey);
+					if (queryValue.isJsonPrimitive()) {
+						primitiveValue(count, collection, queryKey, queryValue, result);
+					} else if (queryValue.isJsonObject()) {
+						objectValue(count, collection, queryKey, queryValue, result);
+					} else if (queryValue.isJsonArray()) {
+						arrayValue(count, collection, queryKey, queryValue, result);
+					}
+					if (!multi) {
+						Collection<Integer> value = result.values();
+						if (value.contains(queryKeys.size())) {
+							break;
+						}
+					}
+				} 
+			}
+		}
+		return result;
+	}
+	
+	private void primitiveValue(long count, DBCollection collection, String queryKey, JsonElement queryValue, Map<JsonObject, Integer> result) {
+		for (long i = 0; i < count; i++) {
+			JsonObject doc = collection.getDocument((int)i);
+			Set<String> docKeys = doc.keySet();
+			if (!docKeys.contains(queryKey)) {
+				break;
+			}
+			if (doc.getAsJsonPrimitive(queryKey).getAsString().equals(queryValue.getAsString())) {
+				notHaveField(doc, result);
+			}				
+		}
+	}
+	
+	private void notHaveField(JsonObject doc, Map<JsonObject, Integer> result) {
+		Integer num = result.get(doc);
+		if (num == null) {
+			result.put(doc, 1);
+		} else {
+			result.put(doc, num++);
+		}
+	}
+	
+	private void objectValue(long count, DBCollection collection, String queryKey, JsonElement queryValue, Map<JsonObject, Integer> result) {
+		Set<String> queryValueKeys = ((JsonObject)queryValue).keySet();
+		Iterator<String> iter = queryValueKeys.iterator();
+		String queryValueKey = iter.next();
+		JsonElement queryValueValue = ((JsonObject)queryValue).get(queryValueKey);
+		for (long i = 0; i < count; i++) {
+			JsonObject doc = collection.getDocument((int)i);
+			Set<String> docKeys = doc.keySet();
+			if (!docKeys.contains(queryKey)) {
+				break;
+			} else if (doc.get(queryKey).getAsString().equals(queryValue.getAsString())) {
+				notHaveField(doc, result);
+			} else if (queryValueValue.isJsonPrimitive()){
+				int value = queryValueValue.getAsInt();
+				switch(queryValueKey) {
+				case "$eq":
+					if (doc.getAsJsonObject(queryKey).getAsInt() == value) {
+						notHaveField(doc, result);
+					}
+					break;
+					
+				case "$gt":
+					if (doc.getAsJsonObject(queryKey).getAsInt() > value) {
+						notHaveField(doc, result);
+					}
+					break;
+					
+				case "$gte":
+					if (doc.getAsJsonObject(queryKey).getAsInt() >= value) {
+						notHaveField(doc, result);
+					}
+					break;
+					
+				case "$lt":
+					if (doc.getAsJsonObject(queryKey).getAsInt() < value) {
+						notHaveField(doc, result);
+					}
+					break;
+					
+				case "$lte":
+					if (doc.getAsJsonObject(queryKey).getAsInt() <= value) {
+						notHaveField(doc, result);
+					}
+					break;
+					
+				case "$ne":
+					if (doc.getAsJsonObject(queryKey).getAsInt() != value) {
+						notHaveField(doc, result);
+					}
+					break;
+				}
+					
+			} else if (queryValueValue.isJsonArray()) {
+				Set<Integer> set = new HashSet<>();
+				Iterator<JsonElement> iter2 = queryValueValue.getAsJsonArray().iterator();
+				set.add(iter2.next().getAsInt());
+				while (iter2.hasNext()) {
+					set.add(iter2.next().getAsInt());
+				}
+				switch(queryValueKey) {
+				case "$in":
+					if (set.contains(doc.getAsJsonObject(queryKey).getAsInt())) {
+						notHaveField(doc, result);
+					}
+					break;
+
+				case "$nin":
+					if (!set.contains(doc.getAsJsonObject(queryKey).getAsInt())) {
+						notHaveField(doc, result);
+					}
+					break;
+				}
+			}
+		}
+	}
+	
+	private void arrayValue(long count, DBCollection collection, String queryKey, JsonElement queryValue, Map<JsonObject, Integer> result) {
+		for (long i = 0; i < count; i++) {
+			JsonObject doc = collection.getDocument((int)i);
+			Set<String> docKeys = doc.keySet();
+			if (!docKeys.contains(queryKey)) {
+				break;
+			}
+			if (doc.getAsJsonArray(queryKey).getAsString().equals(queryValue.getAsString())){
+				notHaveField(doc, result);
+			}				
 		}
 	}
 	
@@ -176,7 +367,7 @@ public class DBCollection {
 	public void drop() {
 		int length = this.documentStorage.size();
 		for(int i = 0; i < length; ++i) {
-			this.documentStorage.remove();
+			this.documentStorage.remove(i);
 		}
 	}
 }

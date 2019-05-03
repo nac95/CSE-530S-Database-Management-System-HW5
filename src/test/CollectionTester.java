@@ -24,7 +24,7 @@ import hw5.DBCursor;
 public class CollectionTester {
 	
 	private DB db;
-	private DBCollection test;
+	private DBCollection testCollection;
 	
 	/*
 	 * Things to be tested:
@@ -46,18 +46,18 @@ public class CollectionTester {
 	public void testGetDocument() throws IOException, ParseException {	
 		db = new DB("data");
 		System.out.println("about to get collection");
-		test = db.getCollection("testCollection");
+		testCollection = db.getCollection("testCollection");
 		System.out.println("got collection");
 		// test primitive
-		JsonObject primitive = test.getDocument(0);
+		JsonObject primitive = testCollection.getDocument(0);
 		assertTrue(primitive.getAsJsonPrimitive("key").getAsString().equals("value"));
 		//test embedded
-		JsonObject embedded = test.getDocument(1);
+		JsonObject embedded = testCollection.getDocument(1);
 		JsonObject compare = new JsonObject();
 		compare.addProperty("key2", "value2");
 		assertTrue(embedded.getAsJsonObject("embedded").getAsJsonObject().equals(compare));
 		//test array
-		JsonObject array = test.getDocument(2);
+		JsonObject array = testCollection.getDocument(2);
 		JsonArray array2 = new JsonArray();
 		array2.add("one");
 		array2.add("two");
@@ -70,9 +70,9 @@ public class CollectionTester {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("testInsert", "Worked");
 		System.out.println("not insert");
-		test.insert(jo);
+		testCollection.insert(jo);
 		System.out.println("inserted");
-		DBCursor result = test.find(jo);
+		DBCursor result = testCollection.find(jo);
 		assertTrue(result.count()==1);
 		JsonObject doc = result.next();
 		assertTrue(doc.getAsJsonObject()!= null);
@@ -87,10 +87,10 @@ public class CollectionTester {
 			document.addProperty("testInsertMulti", "test");
 			jos[i] = document;
 		}
-		test.insert(jos);
+		testCollection.insert(jos);
 		JsonObject document = new JsonObject();
 		document.addProperty("testInsertMulti", "test");
-		DBCursor result = test.find(document);
+		DBCursor result = testCollection.find(document);
 		assertTrue(result.count()==20);
 		for(int i = 0; i < 20; ++i) {
 			assertTrue(result.hasNext());
@@ -105,8 +105,8 @@ public class CollectionTester {
 		//Document d;
 		JsonObject jo = new JsonObject();
 		jo.addProperty("testRemove", "Worked");
-		test.remove(jo, true);
-		DBCursor result = test.find(jo);
+		testCollection.remove(jo, false);
+		DBCursor result = testCollection.find(jo);
 		assertFalse(result.hasNext());
 	}
 	@Test
@@ -120,8 +120,8 @@ public class CollectionTester {
 		jo.addProperty("RemoveTest", "test");
 		
 		//test multi is False
-		test.remove(jo, false);
-		DBCursor result1 = test.find(jo);
+		testCollection.remove(jo, true);
+		DBCursor result1 = testCollection.find(jo);
 		assertTrue(result1.count()==19);
 		for(int i=0; i < jos.length-1;++i) {
 			assertTrue(result1.hasNext());
@@ -129,8 +129,8 @@ public class CollectionTester {
 		assertFalse(result1.hasNext());
 		
 		//test multi is True
-		test.remove(jo, true);
-		DBCursor result2 = test.find(jo);
+		testCollection.remove(jo, true);
+		DBCursor result2 = testCollection.find(jo);
 		assertTrue(result2.count()==0);
 		assertFalse(result2.hasNext());
 	}
@@ -138,7 +138,7 @@ public class CollectionTester {
 	
 	@Test
 	public void testDrop() {
-		DBCursor results = test.find();
+		DBCursor results = testCollection.find();
 		assertTrue(results.count() == 0);
 		assertTrue(!results.hasNext());
 	}
