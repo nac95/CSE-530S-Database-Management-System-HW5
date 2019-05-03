@@ -33,15 +33,21 @@ public class CollectionTester {
 	 * Document insert/update/remove
 	 */
 	
-	@Before
-	public void setup() throws FileNotFoundException, IOException, ParseException {
-		db = new DB("data");
-		test = db.getCollection("testCollection");
-	}
+//	@Before
+//	public void setup() throws FileNotFoundException, IOException, ParseException {
+//		db = new DB("data");
+//		System.out.println("about to get collection");
+//		test = db.getCollection("testCollection");
+//		System.out.println("got collection");
+//	}
 
 	
 	@Test
-	public void testGetDocument() {	
+	public void testGetDocument() throws IOException, ParseException {	
+		db = new DB("data");
+		System.out.println("about to get collection");
+		test = db.getCollection("testCollection");
+		System.out.println("got collection");
 		// test primitive
 		JsonObject primitive = test.getDocument(0);
 		assertTrue(primitive.getAsJsonPrimitive("key").getAsString().equals("value"));
@@ -56,7 +62,7 @@ public class CollectionTester {
 		array2.add("one");
 		array2.add("two");
 		array2.add("three");
-		assertTrue(array.getAsJsonObject("array").getAsJsonArray().equals(array2));
+		assertTrue(array.getAsJsonArray("array").equals(array2));
 	}
 	
 	@Test
