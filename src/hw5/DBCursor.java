@@ -393,6 +393,9 @@ public class DBCursor implements Iterator<JsonObject>{
 	 * Returns the next document
 	 */
 	public JsonObject next() {
+		if (index >= result.size() - 1) {
+			return null;
+		}
 		List<JsonObject> list = toList(result);
 		return list.get(++index);
 	}

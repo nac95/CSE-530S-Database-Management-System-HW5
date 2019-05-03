@@ -168,6 +168,7 @@ public class DBCollection {
 		}
 		update(result, another, update);
 		documentStorage = another;
+		this.writeFile();
 	}
 	
 	private void update(Map<JsonObject, Integer> result, List<JsonObject> another, JsonObject update) {
@@ -229,6 +230,7 @@ public class DBCollection {
 			}
 		}
 		documentStorage = another;
+		this.writeFile();
 	}
 	
 	private Map<JsonObject, Integer> find(DBCollection collection, Set<String> queryKeys, JsonObject query, boolean multi) {
