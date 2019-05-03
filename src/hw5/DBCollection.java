@@ -112,17 +112,14 @@ public class DBCollection {
 	 * @throws IOException 
 	 */
 	public void insert(JsonObject... documents) throws IOException {
-		for(int i = 0; i < documents.length;++i) {
-			this.documentStorage.add(documents[i]);
-			// add this to file
-			try(FileWriter fw = new FileWriter(this.collection)){
-				fw.write(Document.toJsonString(documents[i]));
-	            fw.flush();
-			}catch(IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+	  System.out.println("insert");
+	  for(int i = 0; i < documents.length;++i) {
+	   this.documentStorage.add(documents[i]);
+	   System.out.println(documents[i].toString());
+	   // add this to file
+	   this.writeFile();
+	  }
+	 }
 	
 	/**
 	 * Locates one or more documents and replaces them
@@ -387,4 +384,22 @@ public class DBCollection {
 			this.documentStorage.remove(i);
 		}
 	}
+	
+	private void writeFile() {
+		  String fileResult="";
+		  try(FileWriter fw = new FileWriter(this.collection)){
+		   for(int i = 0; i < this.documentStorage.size();++i) {
+		    System.out.println();
+		    System.out.println("insert"+Document.toJsonString(this.documentStorage.get(i))+"in collection 375");
+		    fileResult += Document.toJsonString(this.documentStorage.get(i))+"/t";
+		   }
+		   System.out.println("file result");
+		   fw.write(fileResult);
+		            fw.flush();
+		  }catch(IOException e) {
+		   e.printStackTrace();
+		  }
+		  
+		  
+		 }
 }

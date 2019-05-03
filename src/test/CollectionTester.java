@@ -33,21 +33,12 @@ public class CollectionTester {
 	 * Document insert/update/remove
 	 */
 	
-//	@Before
-//	public void setup() throws FileNotFoundException, IOException, ParseException {
-//		db = new DB("data");
-//		System.out.println("about to get collection");
-//		test = db.getCollection("testCollection");
-//		System.out.println("got collection");
-//	}
 
 	
 	@Test
 	public void testGetDocument() throws IOException, ParseException {	
 		db = new DB("data");
-		System.out.println("about to get collection");
 		testCollection = db.getCollection("testCollection");
-		System.out.println("got collection");
 		// test primitive
 		JsonObject primitive = testCollection.getDocument(0);
 		assertTrue(primitive.getAsJsonPrimitive("key").getAsString().equals("value"));
@@ -66,7 +57,9 @@ public class CollectionTester {
 	}
 	
 	@Test
-	public void testInsert() throws IOException {
+	public void testInsert() throws IOException, ParseException {
+		db = new DB("data");
+		testCollection = db.getCollection("testCollection");
 		JsonObject jo = new JsonObject();
 		jo.addProperty("testInsert", "Worked");
 		System.out.println("not insert");
@@ -79,8 +72,9 @@ public class CollectionTester {
 	}
 	
 	@Test
-	public void testInsertMulti() throws IOException {
-//		JsonArray jos = new JsonArray();
+	public void testInsertMulti() throws IOException, ParseException {
+		db = new DB("data");
+		testCollection = db.getCollection("testCollection");
 		JsonObject [] jos = new JsonObject[20];
 		for(int i=0; i < 20; ++i) {
 			JsonObject document = new JsonObject();
@@ -100,46 +94,58 @@ public class CollectionTester {
 		
 	}
 	
-	@Test
-	public void testRemoveSingle() {
-		//Document d;
-		JsonObject jo = new JsonObject();
-		jo.addProperty("testRemove", "Worked");
-		testCollection.remove(jo, false);
-		DBCursor result = testCollection.find(jo);
-		assertFalse(result.hasNext());
-	}
-	@Test
-	public void testRemoveMulti() {
-		JsonObject [] jos = new JsonObject[20];
-		for(int i=0; i < jos.length; ++i) {
-			jos[i] = new JsonObject();
-			jos[i].addProperty("RemoveTest", "test");
-		}
-		JsonObject jo = new JsonObject();
-		jo.addProperty("RemoveTest", "test");
-		
-		//test multi is False
-		testCollection.remove(jo, true);
-		DBCursor result1 = testCollection.find(jo);
-		assertTrue(result1.count()==19);
-		for(int i=0; i < jos.length-1;++i) {
-			assertTrue(result1.hasNext());
-		}
-		assertFalse(result1.hasNext());
-		
-		//test multi is True
-		testCollection.remove(jo, true);
-		DBCursor result2 = testCollection.find(jo);
-		assertTrue(result2.count()==0);
-		assertFalse(result2.hasNext());
-	}
-	
-	
-	@Test
-	public void testDrop() {
-		DBCursor results = testCollection.find();
-		assertTrue(results.count() == 0);
-		assertTrue(!results.hasNext());
-	}
+//	@Test
+//	public void testRemoveSingle() throws FileNotFoundException, IOException, ParseException {
+//		db = new DB("data");
+//		System.out.println("about to get collection");
+//		testCollection = db.getCollection("testCollection");
+//		System.out.println("got collection");
+//		//Document d;
+//		JsonObject jo = new JsonObject();
+//		jo.addProperty("testRemove", "Worked");
+//		testCollection.remove(jo, false);
+//		DBCursor result = testCollection.find(jo);
+//		assertFalse(result.hasNext());
+//	}
+//	@Test
+//	public void testRemoveMulti() throws FileNotFoundException, IOException, ParseException {
+//		db = new DB("data");
+//		System.out.println("about to get collection");
+//		testCollection = db.getCollection("testCollection");
+//		System.out.println("got collection");
+//		JsonObject [] jos = new JsonObject[20];
+//		for(int i=0; i < jos.length; ++i) {
+//			jos[i] = new JsonObject();
+//			jos[i].addProperty("RemoveTest", "test");
+//		}
+//		JsonObject jo = new JsonObject();
+//		jo.addProperty("RemoveTest", "test");
+//		
+//		//test multi is False
+//		testCollection.remove(jo, true);
+//		DBCursor result1 = testCollection.find(jo);
+//		assertTrue(result1.count()==19);
+//		for(int i=0; i < jos.length-1;++i) {
+//			assertTrue(result1.hasNext());
+//		}
+//		assertFalse(result1.hasNext());
+//		
+//		//test multi is True
+//		testCollection.remove(jo, true);
+//		DBCursor result2 = testCollection.find(jo);
+//		assertTrue(result2.count()==0);
+//		assertFalse(result2.hasNext());
+//	}
+//	
+//	
+//	@Test
+//	public void testDrop() throws FileNotFoundException, IOException, ParseException {
+//		db = new DB("data");
+//		System.out.println("about to get collection");
+//		testCollection = db.getCollection("testCollection");
+//		System.out.println("got collection");
+//		DBCursor results = testCollection.find();
+//		assertTrue(results.count() == 0);
+//		assertTrue(!results.hasNext());
+//	}
 }
