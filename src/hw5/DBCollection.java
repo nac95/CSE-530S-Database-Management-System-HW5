@@ -106,8 +106,11 @@ public class DBCollection {
 	public void insert(JsonObject... documents) {
 		for(int i = 0; i < documents.length;++i) {
 			this.documentStorage.add(documents[i]);
+			// add this to file
+			//try()
 		}
-		// add this to file
+		
+		
 	}
 	
 	/**
