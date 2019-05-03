@@ -109,14 +109,13 @@ public class DBCollection {
 		for(int i = 0; i < documents.length;++i) {
 			this.documentStorage.add(documents[i]);
 			// add this to file
-			try(FileWriter file = new FileWriter(this.collection)){
-				
+			try(FileWriter fw = new FileWriter(this.collection)){
+				fw.write(Document.toJsonString(documents[i]));
+	            fw.flush();
 			}catch(IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		
 	}
 	
 	/**

@@ -69,7 +69,9 @@ public class CollectionTester {
 	public void testInsert() throws IOException {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("testInsert", "Worked");
+		System.out.println("not insert");
 		test.insert(jo);
+		System.out.println("inserted");
 		DBCursor result = test.find(jo);
 		assertTrue(result.count()==1);
 		JsonObject doc = result.next();
