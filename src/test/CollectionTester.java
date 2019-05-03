@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 import hw5.DB;
 import hw5.DBCollection;
 import hw5.DBCursor;
+import hw5.Document;
 
 public class CollectionTester {
 	
@@ -63,7 +64,7 @@ public class CollectionTester {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("testInsert", "Worked");
 		System.out.println("not insert");
-		testCollection.insert(jo);
+		testCollection.insert(Document.parse("{\"testInsert\":\"worked\"}"));
 		System.out.println("inserted");
 		DBCursor result = testCollection.find(jo);
 		assertTrue(result.count()==1);
@@ -75,18 +76,16 @@ public class CollectionTester {
 	public void testInsertMulti() throws IOException, ParseException {
 		db = new DB("data");
 		testCollection = db.getCollection("testCollection");
-		JsonObject [] jos = new JsonObject[20];
-		for(int i=0; i < 20; ++i) {
-			JsonObject document = new JsonObject();
-			document.addProperty("testInsertMulti", "test");
-			jos[i] = document;
-		}
-		testCollection.insert(jos);
+		testCollection.insert(	   
+		    Document.parse("{ \"state\": \"Missouri\", \"city\": \"Saint Louis\"}"),
+		    Document.parse("{ \"state\": \"Missouri\", \"city\": \"Saint Louis\"}, \"student\":{\"name\":\"A\"}"),
+		    Document.parse("{ \"state\": \"Missouri\", \"city\": \"Saint Louis\"},\"students\":[\"A\",\"B\"]")
+			);
 		JsonObject document = new JsonObject();
-		document.addProperty("testInsertMulti", "test");
+		document.addProperty("state", "Missouri");
 		DBCursor result = testCollection.find(document);
-		assertTrue(result.count()==20);
-		for(int i = 0; i < 20; ++i) {
+		assertTrue(result.count()==3);
+		for(int i = 0; i < 3; ++i) {
 			assertTrue(result.hasNext());
 			assertTrue(result.next().getAsJsonObject()!= null);
 		}
