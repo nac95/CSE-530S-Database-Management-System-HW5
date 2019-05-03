@@ -209,9 +209,7 @@ public class DBCollection {
 		}
 	}
 	
-	private void updateDetail() {
-		
-	}
+	
 	/**
 	 * Removes one or more documents that match the given
 	 * query parameters
@@ -279,7 +277,7 @@ public class DBCollection {
 			if (!docKeys.contains(queryKey)) {
 				continue;
 			}
-			if (doc.getAsJsonPrimitive(queryKey).getAsString().equals(queryValue.getAsString())) {
+			if (doc.getAsJsonPrimitive(queryKey).toString().equals(queryValue.toString())) {
 				notHaveField(doc, result);
 			}				
 		}
@@ -304,7 +302,7 @@ public class DBCollection {
 			Set<String> docKeys = doc.keySet();
 			if (!docKeys.contains(queryKey)) {
 				continue;
-			} else if (doc.get(queryKey).getAsString().equals(queryValue.getAsString())) {
+			} else if (doc.get(queryKey).toString().equals(queryValue.toString())) {
 				notHaveField(doc, result);
 			} else if (queryValueValue.isJsonPrimitive()){
 				int value = queryValueValue.getAsInt();
@@ -377,7 +375,7 @@ public class DBCollection {
 			if (!docKeys.contains(queryKey)) {
 				continue;
 			}
-			if (doc.getAsJsonArray(queryKey).getAsString().equals(queryValue.getAsString())){
+			if (doc.getAsJsonArray(queryKey).toString().equals(queryValue.toString())){
 				notHaveField(doc, result);
 			}				
 		}
