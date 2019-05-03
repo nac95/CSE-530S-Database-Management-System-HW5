@@ -40,8 +40,11 @@ public class DBCursor implements Iterator<JsonObject>{
 			Set<String> fieldsKeys = fields.keySet();
 			Iterator<String> iter2 = fieldsKeys.iterator();
 			String fieldKey = iter2.next();
-			JsonElement fieldValue = fields.get(fieldKey);
-			boolean contain = fieldValue.getAsBoolean();
+			int fieldValue = fields.get(fieldKey).getAsInt();
+			boolean contain = false;
+			if (fieldValue == 1) {
+				contain = true;
+			}
 			find(collection, queryKeys, query, fieldKey, contain);
 		}
 		print(result);
@@ -107,7 +110,7 @@ public class DBCursor implements Iterator<JsonObject>{
 			if (!docKeys.contains(queryKey)) {
 				continue;
 			}
-			if (doc.getAsJsonPrimitive(queryKey).toString().equals(queryValue.toString())) {
+			if (doc.getAsJsonPrimitive(queryKey).getAsString().equals(queryValue.getAsString())) {
 				notHaveField(doc);
 			}				
 		}
@@ -259,7 +262,7 @@ public class DBCursor implements Iterator<JsonObject>{
 			if (!docKeys.contains(queryKey)) {
 				continue;
 			}
-			if (doc.getAsJsonPrimitive(queryKey).toString().equals(queryValue.toString())) {
+			if (doc.getAsJsonPrimitive(queryKey).getAsString().equals(queryValue.getAsString())) {
 				haveField(contain, doc, docKeys, fieldKey);
 			}				
 		}

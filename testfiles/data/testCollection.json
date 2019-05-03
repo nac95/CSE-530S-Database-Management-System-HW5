@@ -1,8 +1,4 @@
-{"key":"value"}	
-{"embedded":{"key2":"value2"}}	
-{"array":["one","two","three"]}	
-{"testInsert":"worked"}	
-{"testInsert":"worked"}	
-{"testInsert":"worked"}	
-{"testInsert":"worked"}	
+{"State":"Missouri","city":"Saint Louis"}	
+{"State":"Missouri","city":"Saint Louis","universities":{"Department":"Engineer"}}	
+{"State":"Missouri","city":"Saint Louis","Universities":["WashU","SLU","UMSL"]}	
 {"testInsert":"worked"}	

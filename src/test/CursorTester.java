@@ -108,8 +108,8 @@ public class CursorTester {
 		assertTrue(result1.hasNext());
 		JsonObject doc1 = result1.next();
 		assertTrue(doc1.getAsJsonObject()!= null);
-		assertTrue(doc.getAsJsonObject("title")!=null);
-		assertTrue(doc.getAsJsonObject("course")==null);
+		assertTrue(doc1.getAsJsonPrimitive("title").getAsString().equals("myTest"));
+		assertTrue(doc1.getAsJsonPrimitive("course") == null);
 		
 		test.remove(query, true);
 	}

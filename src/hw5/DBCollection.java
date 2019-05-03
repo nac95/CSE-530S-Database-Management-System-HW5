@@ -277,7 +277,7 @@ public class DBCollection {
 			if (!docKeys.contains(queryKey)) {
 				continue;
 			}
-			if (doc.getAsJsonPrimitive(queryKey).toString().equals(queryValue.toString())) {
+			if (doc.getAsJsonPrimitive(queryKey).getAsString().equals(queryValue.getAsString())) {
 				notHaveField(doc, result);
 			}				
 		}
@@ -406,10 +406,10 @@ public class DBCollection {
 	 * Drops this collection, removing all of the documents it contains from the DB
 	 */
 	public void drop() {
-		int length = this.documentStorage.size();
-		for(int i = 0; i < length; ++i) {
-			this.documentStorage.remove(i);
+		while (!documentStorage.isEmpty()) {
+			documentStorage.remove(0);
 		}
+		writeFile();
 	}
 	
 	private void writeFile() {
