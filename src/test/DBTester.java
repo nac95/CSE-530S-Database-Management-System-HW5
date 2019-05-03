@@ -3,14 +3,18 @@ package test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import hw5.DB;
+import hw5.DBCollection;
 
 
-class DBTester {
+public class DBTester {
 
 	/*
 	 * Things to consider testing:
@@ -27,6 +31,25 @@ class DBTester {
 		assertTrue(new File("testfiles/hw5").exists());
 	}
 	
+	@Test
+	public void testCreateNewCollection() throws FileNotFoundException, IOException, ParseException {
+		DB hw5 = new DB("hw5");
+		DBCollection collection = new DBCollection(hw5, "test");
+		assertTrue(new File("testfiles/hw5/test.json").exists());
+	}
 	
+	@Test
+	public void testReturnCollection() throws FileNotFoundException, IOException, ParseException {
+		DB hw5 = new DB("hw5");
+		DBCollection collection = new DBCollection(hw5, "test");
+		assertTrue(hw5.getCollection("test").getName().equals("test"));
+	}
+	
+	@Test
+	public void testDropDB() {
+		DB hw5 = new DB("hw5");
+		hw5.dropDatabase();
+		assertFalse(new File("testfiles/hw5").exists());
+	}
 
 }

@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 
 import hw5.Document;
 
-class DocumentTester {
+public class DocumentTester {
 
 	/*
 	 * Things to consider testing:
