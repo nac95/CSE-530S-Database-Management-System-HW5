@@ -222,6 +222,13 @@ public class DBCollection {
 		List<JsonObject> another = new LinkedList<>();
 		Map<JsonObject, Integer> result = find(this, queryKeys, query, multi);
 		Set<JsonObject> set = result.keySet();
+		if(!multi) {
+			for (JsonObject object : documentStorage) {
+				if (!set.contains(object)) {
+					another.add(object);
+				}
+			}
+		}
 		for (JsonObject object : documentStorage) {
 			if (!set.contains(object)) {
 				another.add(object);
