@@ -67,7 +67,11 @@ public class CursorTester {
 	@Test
 	public void testFindQuery() {
 		JsonObject jo = new JsonObject();
-		jo.addProperty("key", "value");
+		//jo.addProperty("key", "value");
+		JsonObject object = new JsonObject();
+		object.addProperty("key2", "value2");
+		jo.add("embedded", object);
+		
 		DBCursor results = test.find(jo);
 		assertTrue(results.count() == 1);
 		assertTrue(results.hasNext());

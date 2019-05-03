@@ -277,7 +277,7 @@ public class DBCollection {
 			JsonObject doc = collection.getDocument((int)i);
 			Set<String> docKeys = doc.keySet();
 			if (!docKeys.contains(queryKey)) {
-				break;
+				continue;
 			}
 			if (doc.getAsJsonPrimitive(queryKey).getAsString().equals(queryValue.getAsString())) {
 				notHaveField(doc, result);
@@ -303,7 +303,7 @@ public class DBCollection {
 			JsonObject doc = collection.getDocument((int)i);
 			Set<String> docKeys = doc.keySet();
 			if (!docKeys.contains(queryKey)) {
-				break;
+				continue;
 			} else if (doc.get(queryKey).getAsString().equals(queryValue.getAsString())) {
 				notHaveField(doc, result);
 			} else if (queryValueValue.isJsonPrimitive()){
@@ -375,7 +375,7 @@ public class DBCollection {
 			JsonObject doc = collection.getDocument((int)i);
 			Set<String> docKeys = doc.keySet();
 			if (!docKeys.contains(queryKey)) {
-				break;
+				continue;
 			}
 			if (doc.getAsJsonArray(queryKey).getAsString().equals(queryValue.getAsString())){
 				notHaveField(doc, result);
