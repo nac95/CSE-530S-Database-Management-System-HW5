@@ -153,22 +153,39 @@ public class DBCollection {
 		String updateKey = iter.next();
 		JsonElement updateValue = update.get(updateKey);
 		for (JsonObject object : result.keySet()) {
-			if (updateValue.isJsonPrimitive() || updateValue.isJsonArray()) {
-				JsonObject newObject = new JsonObject();
-				Set<String> objectKey = object.keySet();
-				for (String s : objectKey) {
-					if (s.equals(updateKey)) {
-						newObject.add(updateKey, updateValue);
-					} else {
-						newObject.add(s, object.get(s));
-					}
+			JsonObject newObject = new JsonObject();
+			Set<String> objectKey = object.keySet();
+			for (String s : objectKey) {
+				if (s.equals(updateKey)) {
+					newObject.add(updateKey, updateValue);
+				} else {
+					newObject.add(s, object.get(s));
 				}
-				another.add(newObject);
-			} else {
-				
 			}
-			
+			another.add(newObject);
 		}
+		if (updateKeys.size() > 1) {
+			while (iter.hasNext()) {
+				updateKey = iter.next();
+				updateValue = update.get(updateKey);
+				for (JsonObject object : result.keySet()) {
+					JsonObject newObject = new JsonObject();
+					Set<String> objectKey = object.keySet();
+					for (String s : objectKey) {
+						if (s.equals(updateKey)) {
+							newObject.add(updateKey, updateValue);
+						} else {
+							newObject.add(s, object.get(s));
+						}
+					}
+					another.add(newObject);
+				}
+			}
+		}
+	}
+	
+	private void updateDetail() {
+		
 	}
 	/**
 	 * Removes one or more documents that match the given
