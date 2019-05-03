@@ -92,7 +92,15 @@ public class DBCollection {
 	 * @return
 	 */
 	public DBCursor find(JsonObject query) {
-		return new DBCursor(this, query, null);
+		DBCollection col = null;
+		try {
+			col = new DBCollection(this.database, this.name);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DBCursor result = new DBCursor(col, query, null);
+		return result;
 	}
 	
 	/**

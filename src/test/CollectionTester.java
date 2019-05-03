@@ -69,7 +69,7 @@ public class CollectionTester {
 		System.out.println("not insert");
 		testCollection.insert(Document.parse("{\"testInsert\":\"worked\"}"));
 		System.out.println("inserted");
-		DBCursor result = testCollection.find(jo);
+		DBCursor result = testCollection.find(Document.parse("{\"testInsert\":\"worked\"}"));
 		assertTrue(result.count()==1);
 		JsonObject doc = result.next();
 		assertTrue(doc.getAsJsonObject()!= null);

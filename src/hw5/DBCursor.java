@@ -1,5 +1,6 @@
 package hw5;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,7 +16,7 @@ public class DBCursor implements Iterator<JsonObject>{
 	private DBCollection collection;
 	private JsonObject query;
 	private JsonObject fields;
-	private Map<JsonObject, Integer> result;
+	private Map<JsonObject, Integer> result = new HashMap<>();
 	private int index = -1;
 
 	public DBCursor(DBCollection collection, JsonObject query, JsonObject fields) {
@@ -29,17 +30,18 @@ public class DBCursor implements Iterator<JsonObject>{
 			findAll(collection);
 		} 
 		//case 2: only have query parameter
-		Set<String> queryKeys = query.keySet();
 		if (query != null && fields == null) {
+			Set<String> queryKeys = query.keySet();
 			find(collection, queryKeys, query);
 		}
 		//case 3: have both query and projection parameter
-		Set<String> fieldsKeys = fields.keySet();
-		Iterator<String> iter2 = fieldsKeys.iterator();
-		String fieldKey = iter2.next();
-		JsonElement fieldValue = fields.get(fieldKey);
-		boolean contain = fieldValue.getAsBoolean();
 		if (query != null && fields != null) {
+			Set<String> queryKeys = query.keySet();
+			Set<String> fieldsKeys = fields.keySet();
+			Iterator<String> iter2 = fieldsKeys.iterator();
+			String fieldKey = iter2.next();
+			JsonElement fieldValue = fields.get(fieldKey);
+			boolean contain = fieldValue.getAsBoolean();
 			find(collection, queryKeys, query, fieldKey, contain);
 		}
 		print(result);
