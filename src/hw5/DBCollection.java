@@ -1,15 +1,20 @@
 package hw5;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonStreamParser;
 
 
 public class DBCollection {
@@ -23,35 +28,42 @@ public class DBCollection {
 	 * with the given name. If that collection doesn't exist
 	 * it will be created.
 	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 * @throws ParseException
+	 * 
+	 * 
 	 */
-	public DBCollection(DB database, String name) throws FileNotFoundException, IOException, ParseException {
+	public DBCollection(DB database, String name) throws IOException {
 		this.database = database;
 		this.name = name;
 		//may change
 		this.documentStorage = new LinkedList<>();
-		
 		this.collection = new File(this.database.db.getPath()+"/"+name+".json"); 
-		JsonParser jsonParser = new JsonParser();
-		System.out.println("exist?"+this.collection.exists());
+		
 		if(this.collection.exists()) {
-			try(FileReader fr = new FileReader(this.database.db.getPath()+"/"+name+".json")){
-				JsonObject jos = (JsonObject) jsonParser.parse(fr);
-				System.out.println(jos);
+			System.out.println("start to read file");
+			//try read the file
+			try(FileReader fr = new FileReader(this.collection)){				
+				BufferedReader br = new BufferedReader(fr);
+				JsonStreamParser parser = new JsonStreamParser(br);
 				
-			}
-			catch(FileNotFoundException e) {
-				System.out.println("File not found");
-				e.printStackTrace();
+				// synchronize on an object shared by threads
+				synchronized (parser) { 
+				System.out.println("parser has next?"+parser.hasNext());
+					while (parser.hasNext()) {
+					    JsonObject jo = (JsonObject)parser.next();
+					    this.documentStorage.add(jo);
+					    System.out.println(jo.toString());
+					   }
+				}
+				//end of parse
 			}
 			catch(IOException e) {
+				System.out.println("IO exception");
 				e.printStackTrace();
 			}
-			
-			
+		// if no such file
 		}else {
-			
+			this.collection.createNewFile();
+			 System.out.println("File has been created.");
 		}
 		
 	}
@@ -91,12 +103,20 @@ public class DBCollection {
 	 * When this method is completed, the documents
 	 * should be permanently stored on disk.
 	 * @param documents
+	 * @throws IOException 
 	 */
-	public void insert(JsonObject... documents) {
+	public void insert(JsonObject... documents) throws IOException {
 		for(int i = 0; i < documents.length;++i) {
 			this.documentStorage.add(documents[i]);
+			// add this to file
+			try(FileWriter file = new FileWriter(this.collection)){
+				
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
-		// add this to file
+		
+		
 	}
 	
 	/**
