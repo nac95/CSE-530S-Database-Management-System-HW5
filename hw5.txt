@@ -1,0 +1,3 @@
+All of your conditionals treat the values as ints, even though the write up states that the only data type you are required to implement is strings. I was unable to get any of them to work properly.
+
+Total: 95 / 100
